@@ -124,4 +124,99 @@ function resetPlatforms() {
   }
 
   }
+// ----- DRAW LOOP -----
+function draw() {
+  background(30);
 
+  if (gameState === "start") {
+    drawStartScreen();
+  } else if (gameState === "play") {
+    runGame();
+  } else if (gameState === "gameover") {
+    drawGameOverScreen();
+  }
+}
+
+
+// ----- START SCREEN -----
+function drawStartScreen() {
+  fill(255);
+  textSize(28);
+  textAlign(CENTER);
+  text("", width / 2, height / 2 - 20);
+
+  textSize(18);
+  text("Start game", width / 2, height / 2 + 20);
+}
+
+
+// ----- GAME OVER SCREEN -----
+function drawGameOverScreen() {
+  fill(255, 50, 50);
+  textSize(32);
+  textAlign(CENTER);
+  text("End game", width / 2, height / 2 - 20);
+
+  fill(255);
+  textSize(18);
+  text("Restart game", width / 2, height / 2 + 20);
+}
+
+
+// ----- GAME LOGIC -----
+function runGame() {
+  player.update();
+  player.draw();
+
+  // Update platforms
+  for (let p of platforms) {
+    p.update();
+    p.draw();
+
+    // Collision detection
+    if (!p.broken && p.hits(player)) {
+      if (p.type === "broken") {
+        p.broken = true;
+      } else {
+        player.jump(); // normal or moving platform
+      }
+    }
+  }
+
+  // Scroll platforms down when player moves up
+  if (player.y < height / 2) {
+    player.y += scrollSpeed;
+    for (let p of platforms) {
+      p.y += scrollSpeed;
+    }
+  }
+
+  // Remove old platforms and add new ones
+  for (let i = platforms.length - 1; i >= 0; i--) {
+    if (platforms[i].y > height) {
+      platforms.splice(i, 1);
+
+      let type = random() < 0.1 ? "broken" : random() < 0.25 ? "moving" : "normal";
+
+      platforms.push(
+        new Platform(
+          random(20, width - 100),
+          random(-80, -20),
+          type
+        )
+      );
+    }
+  }
+}
+
+
+// ----- KEY PRESSED -----
+function keyPressed() {
+  if (gameState === "start") {
+    gameState = "play";
+  } else if (gameState === "gameover") {
+    player = new Player();
+    resetPlatforms();
+    gameState = "play";
+  }
+}
