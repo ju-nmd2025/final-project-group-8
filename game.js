@@ -181,11 +181,18 @@ function runGame() {
   }
 
   // Scroll platforms down when player moves up
-  if (player.vy < 0 && player.y < height / 2) {
-    player.y += scrollSpeed;
+
+  if (player.vy < 0 && player.y < height * 0.4) {
+    const scroll = -player.vy;
+
+    player.y = height * 0.4;
     for (let p of platforms) {
-      p.y += scrollSpeed;
+      p.y += scroll;
     }
+  }
+
+  if (player.y < 0) {
+    player.y = 0;
   }
 
   // Remove old platforms and add new ones
