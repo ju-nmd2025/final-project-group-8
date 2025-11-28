@@ -6,12 +6,12 @@ let gameState = "Start"; // start | play | gameover
 class Player {
   constructor() {
     this.x = width / 2;
-    this.y = height - 100;
+    this.y = height - 200;
     this.w = 40;
     this.h = 40;
     this.vy = 0;
-    this.gravity = 0.4;
-    this.jumpForce = -5;
+    this.gravity = 0.35;
+    this.jumpForce = -15;
   }
 
   update() {
@@ -94,7 +94,7 @@ class Platform {
 // ----- GLOBAL VARIABLES -----
 let player;
 let platforms = [];
-let scrollSpeed = 2; // platforms move down as player jumps
+let scrollSpeed = 1; // platforms move down as player jumps
 
 // ----- SETUP -----
 function setup() {
@@ -106,7 +106,7 @@ function setup() {
 // Create starting platforms
 function resetPlatforms() {
   platforms = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 9; i++) {
     let x = random(20, width - 100);
     let y = i * 60;
 
@@ -119,6 +119,7 @@ function resetPlatforms() {
 
     platforms.push(new Platform(x, y, type));
   }
+  platforms.push(new Platform(width / 2 - 30, height - 40, "normal"));
 }
 // ----- DRAW LOOP -----
 function draw() {
@@ -180,7 +181,7 @@ function runGame() {
   }
 
   // Scroll platforms down when player moves up
-  if (player.y < height / 2) {
+  if (player.vy < 0 && player.y < height / 2) {
     player.y += scrollSpeed;
     for (let p of platforms) {
       p.y += scrollSpeed;
