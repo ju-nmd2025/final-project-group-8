@@ -122,7 +122,7 @@ function resetPlatforms() {
 }
 // ----- DRAW LOOP -----
 function draw() {
-  background(30);
+  background(200);
 
   if (gameState === "Start") {
     drawStartScreen();
@@ -138,7 +138,7 @@ function drawStartScreen() {
   fill(255);
   textSize(28);
   textAlign(CENTER);
-  background(300);
+  background(200);
   fill("green");
   text("DOODLE JUMP", width / 2, height / 2 - 20);
 
@@ -204,7 +204,7 @@ function runGame() {
 
 // ----- KEY PRESSED -----
 function keyPressed() {
-  if (gameState === "start") {
+  if (gameState === "Start") {
     gameState = "play";
   } else if (gameState === "gameover") {
     player = new Player();
