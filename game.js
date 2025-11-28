@@ -45,17 +45,17 @@ class Player {
     rect(this.x, this.y, this.w, this.h, 8);
   }
 }
-class Paltform {
-    constructor(x, y, type = "normal") {
+class Platform {
+  constructor(x, y, type = "normal") {
     this.x = x;
     this.y = y;
     this.w = 60;
     this.h = 20;
     this.type = type;
-    this.borken = false;
+    this.broken = false;
     this.moveDir = 1;
-}
-  
+  }
+
   update() {
     // Moving platform
     if (this.type === "moving") {
@@ -91,12 +91,10 @@ class Paltform {
   }
 }
 
-
 // ----- GLOBAL VARIABLES -----
 let player;
 let platforms = [];
 let scrollSpeed = 2; // platforms move down as player jumps
-
 
 // ----- SETUP -----
 function setup() {
@@ -104,7 +102,6 @@ function setup() {
   player = new Player();
   resetPlatforms();
 }
-
 
 // Create starting platforms
 function resetPlatforms() {
@@ -122,13 +119,12 @@ function resetPlatforms() {
 
     platforms.push(new Platform(x, y, type));
   }
-
-  }
+}
 // ----- DRAW LOOP -----
 function draw() {
   background(30);
 
-  if (gameState === "start") {
+  if (gameState === "Start") {
     drawStartScreen();
   } else if (gameState === "play") {
     runGame();
@@ -137,18 +133,19 @@ function draw() {
   }
 }
 
-
 // ----- START SCREEN -----
 function drawStartScreen() {
   fill(255);
   textSize(28);
   textAlign(CENTER);
-  text("", width / 2, height / 2 - 20);
+  background(300);
+  fill("green");
+  text("DOODLE JUMP", width / 2, height / 2 - 20);
 
+  fill("black");
   textSize(18);
-  text("Start game", width / 2, height / 2 + 20);
+  text("Press any key to start", width / 2, height / 2 + 20);
 }
-
 
 // ----- GAME OVER SCREEN -----
 function drawGameOverScreen() {
@@ -161,7 +158,6 @@ function drawGameOverScreen() {
   textSize(18);
   text("Restart game", width / 2, height / 2 + 20);
 }
-
 
 // ----- GAME LOGIC -----
 function runGame() {
@@ -196,19 +192,15 @@ function runGame() {
     if (platforms[i].y > height) {
       platforms.splice(i, 1);
 
-      let type = random() < 0.1 ? "broken" : random() < 0.25 ? "moving" : "normal";
+      let type =
+        random() < 0.1 ? "broken" : random() < 0.25 ? "moving" : "normal";
 
       platforms.push(
-        new Platform(
-          random(20, width - 100),
-          random(-80, -20),
-          type
-        )
+        new Platform(random(20, width - 100), random(-80, -20), type)
       );
     }
   }
 }
-
 
 // ----- KEY PRESSED -----
 function keyPressed() {
