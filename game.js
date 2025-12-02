@@ -1,4 +1,11 @@
-let gameState = "Start"; // start | play | gameover
+let gameState = "Start"; // Start | play | gameover
+let titleImg;
+
+// Load logo image
+function preload() {
+  // doodle_title.png must be in the same folder as index.html and game.js
+  titleImg = loadImage("doodleTitle.png");
+}
 
 // ----- CLASSES -----
 
@@ -45,6 +52,8 @@ class Player {
     rect(this.x, this.y, this.w, this.h, 8);
   }
 }
+
+// Platform class
 class Platform {
   constructor(x, y, type = "normal") {
     this.x = x;
@@ -121,6 +130,7 @@ function resetPlatforms() {
   }
   platforms.push(new Platform(width / 2 - 30, height - 40, "normal"));
 }
+
 // ----- DRAW LOOP -----
 function draw() {
   background(200);
@@ -136,17 +146,27 @@ function draw() {
 
 // ----- START SCREEN -----
 function drawStartScreen() {
-  fill(255);
-  textSize(28);
-  textAlign(CENTER);
   background(200);
-  fill("green");
-  textStyle(BOLDITALIC);
-  text("DOODLE JUMP", width / 2, height / 2 - 20);
+
+  // Draw logo if loaded
+  if (titleImg) {
+    imageMode(CENTER);
+    // last two numbers = width/height on screen, adjust if needed
+    image(titleImg, width / 2, height / 3, 260, 120);
+    imageMode(CORNER);
+  } else {
+    // Fallback text if image fails
+    fill("green");
+    textSize(28);
+    textAlign(CENTER);
+    textStyle(BOLDITALIC);
+    text("DOODLE JUMP", width / 2, height / 3);
+  }
 
   fill("black");
   textStyle(NORMAL);
   textSize(18);
+  textAlign(CENTER);
   text("Press any key to start", width / 2, height / 2 + 20);
 }
 
@@ -179,13 +199,12 @@ function runGame() {
       if (p.type === "broken") {
         p.broken = true;
       } else {
-        player.jump(); // normal or moving platform
+        player.jump(); // normal or moving
       }
     }
   }
 
   // Scroll platforms down when player moves up
-
   if (player.vy < 0 && player.y < height * 0.4) {
     const scroll = -player.vy;
 
