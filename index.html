@@ -1,44 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-<head>
-    <meta charset="UTF-8" />
-    <title>Doodle Jump - p5.js Game</title>
-=======
   <head>
     <meta charset="UTF-8" />
-    <title>Doodle Jump</title>
->>>>>>> visuals
+    <title>Jump Up Game</title>
 
     <!-- p5.js library -->
     <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
 
-<<<<<<< HEAD
-    <!-- Link to external CSS (optional) -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- Your game code -->
-    <script src="sketch.js" defer></script>
-
-    <style>
-        /* DEFAULT fallback styling if style.css is not present */
-        body {
-            margin: 0;
-            background: #222;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-    </style>
-</head>
-
-<body>
-    <!-- p5.js will automatically insert the canvas here -->
-</body>
-=======
     <!-- Your game code -->
     <script src="game.js"></script>
 
@@ -50,14 +18,84 @@
         justify-content: center;
         align-items: center;
         min-height: 100vh;
+        font-family: Arial, sans-serif;
+        color: white;
       }
+
+      #game-container {
+        position: relative;
+      }
+
       canvas {
         border: 2px solid #444;
+        display: block;
+      }
+
+      /* Optional overlay screens (kept but hidden by default) */
+      .screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.6);
+        text-align: center;
+        font-size: 24px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 12px 24px;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
       }
     </style>
   </head>
+
   <body>
-    <!-- p5 will create the canvas here -->
+    <div id="game-container">
+      <!-- p5 will create the canvas; you can parent it here if you want:
+           createCanvas(400, 600).parent("game-container"); -->
+
+      <!-- Start Screen (kept but hidden for now) -->
+      <div id="start-screen" class="screen hidden">
+        <h1>Jump Up!</h1>
+        <p>Click the button to start</p>
+        <button onclick="startGame()">Start Game</button>
+      </div>
+
+      <!-- Game Over Screen (kept but hidden for now) -->
+      <div id="gameover-screen" class="screen hidden">
+        <h1>Game Over</h1>
+        <p id="final-score">Score: 0</p>
+        <button onclick="restartGame()">Restart</button>
+      </div>
+    </div>
+
+    <script>
+      // UI control functions (kept in case you want to use the overlays later)
+      function startGame() {
+        document.getElementById("start-screen").classList.add("hidden");
+      }
+
+      function showGameOver(score) {
+        document.getElementById("final-score").innerText = "Score: " + score;
+        document.getElementById("gameover-screen").classList.remove("hidden");
+      }
+
+      function restartGame() {
+        location.reload();
+      }
+    </script>
   </body>
->>>>>>> visuals
 </html>

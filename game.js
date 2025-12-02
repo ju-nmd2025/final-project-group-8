@@ -3,7 +3,6 @@ let titleImg;
 
 // Load logo image
 function preload() {
-  // doodle_title.png must be in the same folder as index.html and game.js
   titleImg = loadImage("doodleTitle.png");
 }
 
@@ -148,19 +147,11 @@ function draw() {
 function drawStartScreen() {
   background(200);
 
-  // Draw logo if loaded
   if (titleImg) {
     imageMode(CENTER);
-    // last two numbers = width/height on screen, adjust if needed
+
     image(titleImg, width / 2, height / 3, 260, 120);
     imageMode(CORNER);
-  } else {
-    // Fallback text if image fails
-    fill("green");
-    textSize(28);
-    textAlign(CENTER);
-    textStyle(BOLDITALIC);
-    text("DOODLE JUMP", width / 2, height / 3);
   }
 
   fill("black");
