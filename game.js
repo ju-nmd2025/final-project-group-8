@@ -141,9 +141,11 @@ function drawStartScreen() {
   textAlign(CENTER);
   background(200);
   fill("green");
+  textStyle(BOLDITALIC);
   text("DOODLE JUMP", width / 2, height / 2 - 20);
 
   fill("black");
+  textStyle(NORMAL);
   textSize(18);
   text("Press any key to start", width / 2, height / 2 + 20);
 }
@@ -153,10 +155,12 @@ function drawGameOverScreen() {
   fill(255, 50, 50);
   textSize(32);
   textAlign(CENTER);
-  text("End game", width / 2, height / 2 - 20);
+  textStyle(BOLDITALIC);
+  text("Game Over", width / 2, height / 2 - 20);
 
   fill(255);
   textSize(18);
+  textStyle(BOLD);
   text("Restart game", width / 2, height / 2 + 20);
 }
 
