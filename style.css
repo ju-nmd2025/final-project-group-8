@@ -1,59 +1,29 @@
-/* Global styling */
+/* --- Global Page Layout (适配 p5.js 游戏) --- */
 body {
     margin: 0;
+    padding: 0;
     background-color: #222;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
+    height: 100vh;
+
+    /* Prevent scrollbars */
+    overflow: hidden;
+
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
 
-/* Game container (p5 canvas goes inside) */
-#game-container {
-    position: relative;
+/* p5.js canvas 自动添加，这里让 canvas 居中 */
+canvas {
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
 }
 
-/* Overlay screens (Start + Game Over) */
-.screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.6);
-    text-align: center;
-    font-size: 24px;
-}
-
-/* Hidden class for toggling screens */
-.hidden {
-    display: none;
-}
-
-/* Buttons */
-button {
-    margin-top: 20px;
-    padding: 12px 24px;
-    font-size: 18px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    color: white;
-    background-color: #4CAF50;
-    transition: 0.2s ease;
-}
-
-button:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-
-button:active {
-    transform: scale(0.97);
+/* 可选：让文字更平滑 */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
