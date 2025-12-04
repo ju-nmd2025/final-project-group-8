@@ -4,6 +4,7 @@ let player;
 let platforms = [];
 let birdLeft, birdRight;
 let currentBird;
+let titleImg;
 let scrollSpeed = 1;
 
 // ---------------------------------------------------------
@@ -170,11 +171,17 @@ function draw() {
 // START SCREEN
 // ---------------------------------------------------------
 function drawStartScreen() {
+  background(200);
+
+  if (titleImg) {
+    imageMode(CENTER);
+    image(titleImg, width / 2, height / 3, 260, 120);
+    imageMode(CORNER);
+  }
+
   fill(0);
-  textSize(28);
-  textAlign(CENTER);
-  text("DOODLE JUMP", width / 2, height / 2 - 20);
   textSize(18);
+  textAlign(CENTER);
   text("Press any key to start", width / 2, height / 2 + 20);
 }
 
