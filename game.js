@@ -1,60 +1,56 @@
 let gameState = "Start"; // Start | play | gameover
-let titleImg;
-let birdLeft, birdRight, currentBird;
 
-// Load logo image
+let player;
+let platforms = [];
+let birdLeft, birdRight;
+let currentBird;
+let scrollSpeed = 1;
+
+// ---------------------------------------------------------
+// PRELOAD IMAGES
+// ---------------------------------------------------------
 function preload() {
+  birdLeft = loadImage("birdLeft.png");
+  birdRight = loadImage("birdRight.png");
   titleImg = loadImage("doodleTitle.png");
-  birdLeft = loadImage('birdLeft.png');
-  birdRight = loadImage('birdRight.png');
-
-}
-function setup() {
-  createCanvas(400, 600);
-  currentBird = birdRight;
 }
 
-function draw() {
-  // movement...
-  image(currentBird, x, y);
-}
-
-// when moving left:
-currentBird = birdLeft;
-
-// when moving right:
-currentBird = birdRight;
-// ----- CLASSES -----
-
-// Player class
+// ---------------------------------------------------------
+// PLAYER CLASS
+// ---------------------------------------------------------
 class Player {
   constructor() {
     this.x = width / 2;
     this.y = height - 200;
-    this.w = 40;
-    this.h = 40;
+    this.w = 60;
+    this.h = 60;
+
     this.vy = 0;
     this.gravity = 0.35;
     this.jumpForce = -15;
+
+    this.direction = "right"; // left | right
   }
 
   update() {
     this.vy += this.gravity;
     this.y += this.vy;
 
-    // Left/right movement (A, D or arrow keys)
+    // Movement
     if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
       this.x -= 4;
+      this.direction = "left";
     }
     if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
       this.x += 4;
+      this.direction = "right";
     }
 
-    // Wrap around left/right
+    // Screen wrap
     if (this.x < -this.w) this.x = width;
     if (this.x > width) this.x = -this.w;
 
-    // Player falls out of screen
+    // Fall out → Game Over
     if (this.y > height) {
       gameState = "gameover";
     }
@@ -65,12 +61,18 @@ class Player {
   }
 
   draw() {
-    fill(255, 180, 0);
-    rect(this.x, this.y, this.w, this.h, 8);
+    if (this.direction === "left") {
+      currentBird = birdLeft;
+    } else {
+      currentBird = birdRight;
+    }
+    image(currentBird, this.x, this.y, this.w, this.h);
   }
 }
 
-// Platform class
+// ---------------------------------------------------------
+// PLATFORM CLASS
+// ---------------------------------------------------------
 class Platform {
   constructor(x, y, type = "normal") {
     this.x = x;
@@ -83,7 +85,6 @@ class Platform {
   }
 
   update() {
-    // Moving platform
     if (this.type === "moving") {
       this.x += this.moveDir * 2;
       if (this.x < 0 || this.x + this.w > width) {
@@ -102,10 +103,9 @@ class Platform {
     }
   }
 
-  // Player collision
   hits(player) {
     if (
-      player.vy > 0 && // only when falling down
+      player.vy > 0 &&
       player.x + player.w > this.x &&
       player.x < this.x + this.w &&
       player.y + player.h > this.y &&
@@ -117,26 +117,28 @@ class Platform {
   }
 }
 
-// ----- GLOBAL VARIABLES -----
-let player;
-let platforms = [];
-let scrollSpeed = 1; // platforms move down as player jumps
-
-// ----- SETUP -----
+// ---------------------------------------------------------
+// SETUP
+// ---------------------------------------------------------
 function setup() {
-  createCanvas(400, 600);
+  let cnv = createCanvas(400, 600);
+  cnv.parent("game-container");
+
   player = new Player();
   resetPlatforms();
+
+  currentBird = birdRight;
 }
 
-// Create starting platforms
+// ---------------------------------------------------------
+// CREATE INITIAL PLATFORMS
+// ---------------------------------------------------------
 function resetPlatforms() {
   platforms = [];
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < 8; i++) {
     let x = random(20, width - 100);
-    let y = i * 60;
+    let y = i * 70;
 
-    // Random type
     let r = random();
     let type = "normal";
 
@@ -145,10 +147,13 @@ function resetPlatforms() {
 
     platforms.push(new Platform(x, y, type));
   }
+
   platforms.push(new Platform(width / 2 - 30, height - 40, "normal"));
 }
 
-// ----- DRAW LOOP -----
+// ---------------------------------------------------------
+// DRAW LOOP
+// ---------------------------------------------------------
 function draw() {
   background(200);
 
@@ -161,73 +166,63 @@ function draw() {
   }
 }
 
-// ----- START SCREEN -----
+// ---------------------------------------------------------
+// START SCREEN
+// ---------------------------------------------------------
 function drawStartScreen() {
-  background(200);
-
-  if (titleImg) {
-    imageMode(CENTER);
-
-    image(titleImg, width / 2, height / 3, 260, 120);
-    imageMode(CORNER);
-  }
-
-  fill("black");
-  textStyle(NORMAL);
-  textSize(18);
+  fill(0);
+  textSize(28);
   textAlign(CENTER);
+  text("DOODLE JUMP", width / 2, height / 2 - 20);
+  textSize(18);
   text("Press any key to start", width / 2, height / 2 + 20);
 }
 
-// ----- GAME OVER SCREEN -----
+// ---------------------------------------------------------
+// GAME OVER SCREEN
+// ---------------------------------------------------------
 function drawGameOverScreen() {
   fill(255, 50, 50);
   textSize(32);
   textAlign(CENTER);
-  textStyle(BOLDITALIC);
   text("Game Over", width / 2, height / 2 - 20);
 
-  fill(255);
+  fill(0);
   textSize(18);
-  textStyle(BOLD);
-  text("Restart game", width / 2, height / 2 + 20);
+  text("Press any key to restart", width / 2, height / 2 + 20);
 }
 
-// ----- GAME LOGIC -----
+// ---------------------------------------------------------
+// MAIN GAME LOOP
+// ---------------------------------------------------------
 function runGame() {
   player.update();
   player.draw();
 
-  // Update platforms
+  // Platforms
   for (let p of platforms) {
     p.update();
     p.draw();
 
-    // Collision detection
     if (!p.broken && p.hits(player)) {
       if (p.type === "broken") {
         p.broken = true;
       } else {
-        player.jump(); // normal or moving
+        player.jump();
       }
     }
   }
 
-  // Scroll platforms down when player moves up
+  // Scrolling
   if (player.vy < 0 && player.y < height * 0.4) {
-    const scroll = -player.vy;
-
+    let scroll = -player.vy;
     player.y = height * 0.4;
     for (let p of platforms) {
       p.y += scroll;
     }
   }
 
-  if (player.y < 0) {
-    player.y = 0;
-  }
-
-  // Remove old platforms and add new ones
+  // Remove and create new platforms
   for (let i = platforms.length - 1; i >= 0; i--) {
     if (platforms[i].y > height) {
       platforms.splice(i, 1);
@@ -242,7 +237,9 @@ function runGame() {
   }
 }
 
-// ----- KEY PRESSED -----
+// ---------------------------------------------------------
+// INPUT HANDLING
+// ---------------------------------------------------------
 function keyPressed() {
   if (gameState === "Start") {
     gameState = "play";
@@ -252,4 +249,3 @@ function keyPressed() {
     gameState = "play";
   }
 }
-
