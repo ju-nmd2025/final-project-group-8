@@ -1,4 +1,4 @@
-/* --- Global Page Layout (适配 p5.js 游戏) --- */
+/* --- Global Page Layout --- */
 body {
     margin: 0;
     padding: 0;
@@ -15,15 +15,16 @@ body {
     color: white;
 }
 
-/* p5.js canvas 自动添加，这里让 canvas 居中 */
+
 canvas {
     display: block;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
 }
 
-/* 可选：让文字更平滑 */
+
 * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
