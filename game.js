@@ -1,11 +1,29 @@
 let gameState = "Start"; // Start | play | gameover
 let titleImg;
+let birdLeft, birdRight, currentBird;
 
 // Load logo image
 function preload() {
   titleImg = loadImage("doodleTitle.png");
+  birdLeft = loadImage('birdLeft.png');
+  birdRight = loadImage('birdRight.png');
+
+}
+function setup() {
+  createCanvas(400, 600);
+  currentBird = birdRight;
 }
 
+function draw() {
+  // movement...
+  image(currentBird, x, y);
+}
+
+// when moving left:
+currentBird = birdLeft;
+
+// when moving right:
+currentBird = birdRight;
 // ----- CLASSES -----
 
 // Player class
@@ -234,3 +252,4 @@ function keyPressed() {
     gameState = "play";
   }
 }
+
