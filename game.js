@@ -11,8 +11,8 @@ let scrollSpeed = 1;
 // PRELOAD IMAGES
 // ---------------------------------------------------------
 function preload() {
-  birdLeft = loadImage("birdLeft.png");
-  birdRight = loadImage("birdRight.png");
+  birdLeft = loadImage("likLeft.png");
+  birdRight = loadImage("likRight.png");
   titleImg = loadImage("doodleTitle.png");
 }
 
