@@ -151,6 +151,9 @@ function resetPlatforms() {
   }
 
   platforms.push(new Platform(width / 2 - 30, height - 40, "normal"));
+
+  //Score reset with platform reset (back to 0)
+  score = 0;
 }
 
 // ---------------------------------------------------------
@@ -248,10 +251,11 @@ function runGame() {
       );
     }
   }
+
   // Draw score
   fill(0);
   textSize(20);
-  text("Score: " + score, 10, 30);
+  text("Score: " + score, 55, 40);
 }
 // ---------------------------------------------------------
 // INPUT HANDLING
