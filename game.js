@@ -250,11 +250,11 @@ function runGame() {
       );
     }
   }
-}
-// Draw score
+  // Draw score
 fill(0);
 textSize(20);
 text("Score: " + score, 10, 30);
+}
 // ---------------------------------------------------------
 // INPUT HANDLING
 // ---------------------------------------------------------
@@ -267,3 +267,4 @@ function keyPressed() {
     gameState = "play";
   }
 }
+
