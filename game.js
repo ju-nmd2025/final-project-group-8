@@ -124,7 +124,7 @@ class Platform {
 // ---------------------------------------------------------
 function setup() {
   let cnv = createCanvas(400, 600);
-  cnv.parent("game-container");
+  //cnv.parent("game-container");
 
   player = new Player();
   resetPlatforms();
@@ -267,4 +267,5 @@ function keyPressed() {
     gameState = "play";
   }
 }
+
 
