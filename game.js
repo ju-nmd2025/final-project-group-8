@@ -179,9 +179,6 @@ function drawStartScreen() {
     image(titleImg, width / 2, height / 3, 260, 120);
     imageMode(CORNER);
   }
-  fill(0);
-  textSize(20);
-  text("Final Score: " + score, width / 2, height / 2 + 10);
 
   fill(0);
   textSize(18);
@@ -201,6 +198,7 @@ function drawGameOverScreen() {
   fill(0);
   textSize(18);
   text("Press any key to restart", width / 2, height / 2 + 20);
+  text("Score: " + score, width / 2, height / 2 + 50);
 }
 
 // ---------------------------------------------------------
@@ -228,7 +226,7 @@ function runGame() {
   // Increase score when player is jumping upward
   if (player.vy < 0) {
     score += floor(-player.vy * 0.1);
-}
+  }
   if (player.vy < 0 && player.y < height * 0.4) {
     let scroll = -player.vy;
     player.y = height * 0.4;
@@ -251,9 +249,9 @@ function runGame() {
     }
   }
   // Draw score
-fill(0);
-textSize(20);
-text("Score: " + score, 10, 30);
+  fill(0);
+  textSize(20);
+  text("Score: " + score, 10, 30);
 }
 // ---------------------------------------------------------
 // INPUT HANDLING
@@ -267,5 +265,3 @@ function keyPressed() {
     gameState = "play";
   }
 }
-
-
