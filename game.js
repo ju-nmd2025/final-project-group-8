@@ -13,6 +13,7 @@ let titleImg;
 let bgImg;
 
 let bgMusic;
+let musicStarted = false;
 
 let scrollSpeed = 1;
 let score = 0;
@@ -232,13 +233,16 @@ function keyPressed() {
 
     //start mmusic after first key pressed
     if (bgMusic && !bgMusic.isPlaying()) {
-      bgMusic.setLoop(true);
-      bgMusic.play();
+      bgMusic.loop();
+      musicStarted = true;
     }
   } else if (gameState === "gameover") {
     player = new Player();
     resetPlatforms();
     gameState = "play";
+    if (bgMusic && !bgMusic.isPlaying()) {
+      bgMusic.loop();
+    }
   }
 }
 
