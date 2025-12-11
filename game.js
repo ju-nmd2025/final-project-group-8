@@ -10,6 +10,8 @@ let platforms = [];
 let birdLeft, birdRight;
 let currentBird;
 let titleImg;
+let bgImg;
+
 let scrollSpeed = 1;
 let score = 0;
 
@@ -20,6 +22,7 @@ function preload() {
   birdLeft = loadImage("likLeft.png");
   birdRight = loadImage("likRight.png");
   titleImg = loadImage("doodleTitle.png");
+  bgImg = loadImage("background.png");
 }
 
 // ---------------------------------------------------------
@@ -105,8 +108,15 @@ function resetPlatforms() {
 // ---------------------------------------------------------
 // DRAW LOOP
 // ---------------------------------------------------------
+function drawBackground() {
+  if (bgImg) {
+    imageMode(CORNER);
+    image(bgImg, 0, 0, width, height);
+  }
+}
+
 function draw() {
-  background(200);
+  drawBackground();
 
   if (gameState === "Start") {
     drawStartScreen();
@@ -121,8 +131,6 @@ function draw() {
 // START SCREEN
 // ---------------------------------------------------------
 function drawStartScreen() {
-  background(200);
-
   if (titleImg) {
     imageMode(CENTER);
     image(titleImg, width / 2, height / 3, 260, 120);
