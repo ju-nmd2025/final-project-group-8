@@ -1,3 +1,8 @@
+// ---------------------------------------------------------
+// PLAYER CLASS IMPORT
+// ---------------------------------------------------------
+import { Player } from "./player.js";
+
 let gameState = "Start"; // Start | play | gameover
 
 let player;
@@ -15,61 +20,6 @@ function preload() {
   birdLeft = loadImage("likLeft.png");
   birdRight = loadImage("likRight.png");
   titleImg = loadImage("doodleTitle.png");
-}
-
-// ---------------------------------------------------------
-// PLAYER CLASS
-// ---------------------------------------------------------
-class Player {
-  constructor() {
-    this.x = width / 2;
-    this.y = height - 200;
-    this.w = 60;
-    this.h = 60;
-
-    this.vy = 0;
-    this.gravity = 0.35;
-    this.jumpForce = -15;
-
-    this.direction = "right"; // left | right
-  }
-
-  update() {
-    this.vy += this.gravity;
-    this.y += this.vy;
-
-    // Movement
-    if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
-      this.x -= 4;
-      this.direction = "left";
-    }
-    if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
-      this.x += 4;
-      this.direction = "right";
-    }
-
-    // Screen wrap
-    if (this.x < -this.w) this.x = width;
-    if (this.x > width) this.x = -this.w;
-
-    // Fall out → Game Over
-    if (this.y > height) {
-      gameState = "gameover";
-    }
-  }
-
-  jump() {
-    this.vy = this.jumpForce;
-  }
-
-  draw() {
-    if (this.direction === "left") {
-      currentBird = birdLeft;
-    } else {
-      currentBird = birdRight;
-    }
-    image(currentBird, this.x, this.y, this.w, this.h);
-  }
 }
 
 // ---------------------------------------------------------
@@ -123,13 +73,9 @@ class Platform {
 // SETUP
 // ---------------------------------------------------------
 function setup() {
-  let cnv = createCanvas(400, 600);
-  //cnv.parent("game-container");
-
+  createCanvas(400, 600);
   player = new Player();
   resetPlatforms();
-
-  currentBird = birdRight;
 }
 
 // ---------------------------------------------------------
@@ -208,8 +154,13 @@ function drawGameOverScreen() {
 // MAIN GAME LOOP
 // ---------------------------------------------------------
 function runGame() {
-  player.update();
-  player.draw();
+  const fellOff = player.update();
+  if (fellOff) {
+    gameState = "gameover";
+    return;
+  }
+  //draw player
+  player.draw(birdLeft, birdRight);
 
   // Platforms
   for (let p of platforms) {
@@ -269,3 +220,9 @@ function keyPressed() {
     gameState = "play";
   }
 }
+
+//windows so import and export work
+window.preload = preload;
+window.setup = setup;
+window.draw = draw;
+window.keyPressed = keyPressed;
