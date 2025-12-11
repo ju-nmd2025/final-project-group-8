@@ -12,6 +12,8 @@ let currentBird;
 let titleImg;
 let bgImg;
 
+let bgMusic;
+
 let scrollSpeed = 1;
 let score = 0;
 
@@ -23,6 +25,7 @@ function preload() {
   birdRight = loadImage("likRight.png");
   titleImg = loadImage("doodleTitle.png");
   bgImg = loadImage("background.png");
+  bgMusic = loadSound("music.mp3");
 }
 
 // ---------------------------------------------------------
@@ -147,6 +150,10 @@ function drawStartScreen() {
 // GAME OVER SCREEN
 // ---------------------------------------------------------
 function drawGameOverScreen() {
+  //stop music when game is over
+  if (bgMusic && bgMusic.isPlaying()) {
+    bgMusic.stop();
+  }
   fill(255, 50, 50);
   textSize(32);
   textAlign(CENTER);
@@ -222,6 +229,12 @@ function runGame() {
 function keyPressed() {
   if (gameState === "Start") {
     gameState = "play";
+
+    //start mmusic after first key pressed
+    if (bgMusic && !bgMusic.isPlaying()) {
+      bgMusic.setLoop(true);
+      bgMusic.play();
+    }
   } else if (gameState === "gameover") {
     player = new Player();
     resetPlatforms();
