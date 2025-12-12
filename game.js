@@ -193,7 +193,7 @@ function runGame() {
   }
 
   // Scrolling
-  // Increase score when player is jumping upward
+  //Increase score when player is jumping upward
   if (player.vy < 0) {
     score += floor(-player.vy * 0.1);
   }
