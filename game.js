@@ -2,7 +2,7 @@
 // PLAYER CLASS IMPORT
 // ---------------------------------------------------------
 import { Player } from "./player.js";
-
+//--------------------------------------3
 let gameState = "Start"; // Start | play | gameover
 
 let player;
