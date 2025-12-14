@@ -12,18 +12,13 @@ let gameState = "Start"; // Start | play | gameover
 let player;
 let platforms = [];
 let birdLeft, birdRight;
-let currentBird;
 let titleImg;
 let bgImg;
-
 let bgMusic;
-let musicStarted = false;
-
-let scrollSpeed = 1;
 let score = 0;
 
 // ---------------------------------------------------------
-// PRELOAD IMAGES
+// PRELOAD IMAGES AND SOUND
 // ---------------------------------------------------------
 function preload() {
   birdLeft = loadImage("likLeft.png");
@@ -47,6 +42,8 @@ function setup() {
 // ---------------------------------------------------------
 function resetPlatforms() {
   platforms = [];
+
+  //8 initial platforms
   for (let i = 0; i < 8; i++) {
     let x = random(20, width - 100);
     let y = i * 70;
@@ -60,6 +57,7 @@ function resetPlatforms() {
     platforms.push(new Platform(x, y, type));
   }
 
+  //safety starting platform
   platforms.push(new Platform(width / 2 - 30, height - 40, "normal"));
 
   //Score reset with platform reset (back to 0)
@@ -67,7 +65,7 @@ function resetPlatforms() {
 }
 
 // ---------------------------------------------------------
-// DRAW LOOP
+// DRAW BACKGROUND
 // ---------------------------------------------------------
 function drawBackground() {
   if (bgImg) {
@@ -76,6 +74,7 @@ function drawBackground() {
   }
 }
 
+//Main draw loop - state of game
 function draw() {
   drawBackground();
 
@@ -112,6 +111,7 @@ function drawGameOverScreen() {
   if (bgMusic && bgMusic.isPlaying()) {
     bgMusic.stop();
   }
+
   fill(255, 50, 50);
   textSize(32);
   textAlign(CENTER);
@@ -149,14 +149,17 @@ function runGame() {
     }
   }
 
-  // Scrolling
+  // Scrolling and score increase
   //Increase score when player is jumping upward
   if (player.vy < 0) {
     score += floor(-player.vy * 0.1);
   }
+
   if (player.vy < 0 && player.y < height * 0.4) {
     let scroll = -player.vy;
     player.y = height * 0.4;
+
+    //scroll platforms
     for (let p of platforms) {
       p.y += scroll;
     }
@@ -197,6 +200,7 @@ function keyPressed() {
     player = new Player();
     resetPlatforms();
     gameState = "play";
+
     if (bgMusic && !bgMusic.isPlaying()) {
       bgMusic.loop();
     }
