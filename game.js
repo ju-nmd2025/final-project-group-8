@@ -71,6 +71,8 @@ function drawBackground() {
   if (bgImg) {
     imageMode(CORNER);
     image(bgImg, 0, 0, width, height);
+  } else {
+    background(200);
   }
 }
 

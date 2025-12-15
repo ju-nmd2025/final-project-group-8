@@ -25,7 +25,7 @@ export class Player {
       this.x += 4;
       this.direction = "right";
     }
-
+    // when player goes off to either side spawn on opposite side
     if (this.x < -this.w) this.x = width;
     if (this.x > width) this.x = -this.w;
 
